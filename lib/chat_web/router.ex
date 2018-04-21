@@ -9,7 +9,8 @@ defmodule ChatWeb.Router do
     pipe_through :api
 
     forward "/graphiql", Absinthe.Plug.GraphiQL,
-      schema: ChatWeb.Schema
+      schema: ChatWeb.Schema,
+      interface: :playground
 
     forward "/graphql", Absinthe.Plug,
       schema: ChatWeb.Schema
