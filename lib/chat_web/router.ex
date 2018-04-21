@@ -5,7 +5,13 @@ defmodule ChatWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", ChatWeb do
+  scope "/" do
     pipe_through :api
+
+    forward "/graphiql", Absinthe.Plug.GraphiQL,
+      schema: ChatWeb.Schema
+
+    forward "/graphql", Absinthe.Plug,
+      schema: ChatWeb.Schema
   end
 end
