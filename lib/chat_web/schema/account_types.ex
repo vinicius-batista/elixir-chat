@@ -23,11 +23,22 @@ defmodule ChatWeb.Schema.AccountTypes do
     field :password, non_null(:string)
   end
 
+  @desc "Input object for login"
+  input_object :login_user_input do
+    field :email, non_null(:string)
+    field :password, non_null(:string)
+  end
+
   @desc "Account mutations"
   object :account_mutations do
     field :register_user, :string do
       arg :input, non_null(:register_user_input)
       resolve HandleErrors.handle_errors(&AccountResolver.register_user/3)
+    end
+
+    field :login_user, :string do
+      arg :input, non_null(:login_user_input)
+      resolve HandleErrors.handle_errors(&AccountResolver.login_user/3)
     end
   end
 
