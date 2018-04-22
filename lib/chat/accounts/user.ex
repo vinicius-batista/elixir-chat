@@ -1,17 +1,19 @@
 defmodule Chat.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
+  alias Chat.Accounts.Token
 
   @email_regex ~r/^(?<user>[^\s]+)@(?<domain>[^\s]+\.[^\s]+)$/
   @required_fields ~w(email name password username)a
   @all_fields ~w()a ++ @required_fields
   schema "users" do
-    field :name, :string
-    field :email, :string
-    field :password, :string
-    field :username, :string
+    field(:name, :string)
+    field(:email, :string)
+    field(:password, :string)
+    field(:username, :string)
 
     timestamps()
+    has_many(:tokens, Token)
   end
 
   @doc false
