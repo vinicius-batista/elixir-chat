@@ -1,16 +1,16 @@
 defmodule ChatWeb.Router do
   use ChatWeb, :router
 
-  pipeline :api do
+  pipeline :graphql do
     plug :accepts, ["json"]
   end
 
   scope "/" do
-    pipe_through :api
+    pipe_through :graphql
 
     forward "/graphiql", Absinthe.Plug.GraphiQL,
       schema: ChatWeb.Schema,
-      interface: :playground
+      interface: :advanced
 
     forward "/graphql", Absinthe.Plug,
       schema: ChatWeb.Schema
