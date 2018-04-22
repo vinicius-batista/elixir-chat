@@ -11,7 +11,7 @@ defmodule ChatWeb.Helpers.HandleErrors do
   def format_changeset(changeset) do
     errors =
       changeset.errors
-      |> Enum.map(fn({key, {value, _context}}) ->
+      |> Enum.map(fn {key, {value, _context}} ->
         [message: "#{key} #{value}"]
       end)
 
