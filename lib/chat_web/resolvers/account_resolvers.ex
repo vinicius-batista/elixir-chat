@@ -13,7 +13,7 @@ defmodule ChatWeb.Resolvers.AccountResolver do
     case Auth.find_user_and_check_password(email, password) do
       {:ok, user} ->
         user
-        |> Guardian.encode_and_sign(%{}, token_type: :refresh)
+        |> Guardian.encode_and_sign(%{}, token_type: :bearer)
         |> Auth.generate_refresh_token()
 
       error ->

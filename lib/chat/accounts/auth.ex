@@ -27,7 +27,7 @@ defmodule Chat.Accounts.Auth do
         tokens = %{
           refresh_token: refresh_token,
           type: type,
-          token: token
+          access_token: token
         }
 
         {:ok, tokens}

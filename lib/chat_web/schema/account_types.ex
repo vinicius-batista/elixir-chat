@@ -16,7 +16,7 @@ defmodule ChatWeb.Schema.AccountTypes do
 
   @desc "Auth tokens"
   object :auth_tokens do
-    field(:token, :string)
+    field(:access_token, :string)
     field(:refresh_token, :string)
     field(:type, :string)
   end
