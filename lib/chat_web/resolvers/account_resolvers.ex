@@ -20,4 +20,24 @@ defmodule ChatWeb.Resolvers.AccountResolver do
         error
     end
   end
+
+  def new_access_token(_, %{refresh_token: refresh_token}, _) do
+    case Auth.get_user_by_refresh_token(refresh_token) do
+      {:ok, user} ->
+        {:ok, access_token, %{"typ" => type}} =
+          user
+          |> Guardian.encode_and_sign(%{}, token_type: :bearer)
+
+        tokens =
+          %{}
+          |> Map.put(:refresh_token, refresh_token)
+          |> Map.put(:access_token, access_token)
+          |> Map.put(:type, type)
+
+        {:ok, tokens}
+
+      error ->
+        error
+    end
+  end
 end

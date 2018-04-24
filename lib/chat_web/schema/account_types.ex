@@ -50,8 +50,9 @@ defmodule ChatWeb.Schema.AccountTypes do
 
   @desc "Account queries"
   object :account_queries do
-    field :user, :string do
-      resolve(fn _, _, _ -> "ola" end)
+    field :new_access_token, :auth_tokens do
+      arg(:refresh_token, non_null(:string))
+      resolve(HandleErrors.handle_errors(&AccountResolver.new_access_token/3))
     end
   end
 end

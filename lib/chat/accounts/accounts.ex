@@ -134,6 +134,22 @@ defmodule Chat.Accounts do
   def get_token!(id), do: Repo.get!(Token, id)
 
   @doc """
+  Gets a single token.
+
+  Raises `Ecto.NoResultsError` if the Token does not exist.
+
+  ## Examples
+
+      iex> get_token_by(%{refresh_token: "dsad-das-dsas"})
+      %Token{}
+
+      iex> get_token!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_token_by(clauses), do: Repo.get_by(Token, clauses)
+
+  @doc """
   Creates a token.
 
   ## Examples

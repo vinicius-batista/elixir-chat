@@ -24,7 +24,8 @@ config :logger, :console,
 config :chat, ChatWeb.Guardian,
   issuer: "chat",
   secret_key: "aHWQAVBy/y8mn3f2xBArth4JhzIYJSnNZGE7m3nVG+wJzig+76hKP9+NCOGJV9Yy",
-  verify_issuer: true
+  verify_issuer: true,
+  ttl: {30, :minutes}
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

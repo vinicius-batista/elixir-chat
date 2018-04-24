@@ -1,7 +1,7 @@
 defmodule Chat.Accounts.Auth do
   import Ecto.{Query, Changeset}, warn: false
   alias Chat.Repo
-  alias Chat.Accounts.{Encryption, User, Token}
+  alias Chat.Accounts.{Encryption, User}
   alias Chat.Accounts
 
   def register(attrs \\ %{}) do
@@ -34,6 +34,23 @@ defmodule Chat.Accounts.Auth do
 
       error ->
         error
+    end
+  end
+
+  def get_user_by_refresh_token(refresh_token) do
+    clauses = %{refresh_token: refresh_token, is_revoked: false}
+
+    case Accounts.get_token_by(clauses) do
+      nil ->
+        {:error, "Could not find user with refresh token provided"}
+
+      token ->
+        user =
+          token
+          |> Repo.preload(:user)
+          |> Map.get(:user)
+
+        {:ok, user}
     end
   end
 
