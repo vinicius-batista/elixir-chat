@@ -3,6 +3,7 @@ defmodule ChatWeb.Router do
 
   pipeline :graphql do
     plug(:accepts, ["json"])
+    plug(ChatWeb.Context)
   end
 
   scope "/" do
