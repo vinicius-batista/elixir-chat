@@ -23,7 +23,7 @@ defmodule Chat.Accounts.Auth do
 
   def generate_refresh_token({:ok, token, %{"typ" => type, "sub" => user_id}}) do
     case Accounts.create_token(%{user_id: user_id, type: type}) do
-      {:ok, %Token{token: refresh_token, type: type}} ->
+      {:ok, %Token{refresh_token: refresh_token, type: type}} ->
         tokens = %{
           refresh_token: refresh_token,
           type: type,

@@ -3,10 +3,10 @@ defmodule Chat.Accounts.Token do
   import Ecto.Changeset
   alias Chat.Accounts.User
 
-  @required_fields ~w(token user_id)a
+  @required_fields ~w(refresh_token user_id)a
   @all_fields ~w(is_revoked type)a ++ @required_fields
   schema "tokens" do
-    field(:token, :string)
+    field(:refresh_token, :string)
     field(:is_revoked, :boolean, default: false)
     field(:type, :string, default: "refresh")
 
@@ -18,8 +18,8 @@ defmodule Chat.Accounts.Token do
   def changeset(token, attrs) do
     token
     |> cast(attrs, @all_fields)
-    |> put_change(:token, Ecto.UUID.generate())
+    |> put_change(:refresh_token, Ecto.UUID.generate())
     |> validate_required(@required_fields)
-    |> unique_constraint(:token, name: :tokens_token_index)
+    |> unique_constraint(:refresh_token, name: :tokens_refresh_token_index)
   end
 end
