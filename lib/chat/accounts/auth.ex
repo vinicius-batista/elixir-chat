@@ -21,14 +21,14 @@ defmodule Chat.Accounts.Auth do
     end
   end
 
-  def generate_refresh_token({:ok, token, %{"typ" => type, "sub" => user_id}}) do
+  def generate_refresh_token({:ok, access_token, %{"typ" => type, "sub" => user_id}}) do
     case Accounts.create_token(%{user_id: user_id, type: type}) do
-      {:ok, %Token{refresh_token: refresh_token, type: type}} ->
-        tokens = %{
-          refresh_token: refresh_token,
-          type: type,
-          access_token: token
-        }
+      {:ok, token} ->
+        tokens =
+          token
+          |> Map.from_struct()
+          |> Map.put(:access_token, access_token)
+          |> Map.take([:access_token, :refresh_token, :type])
 
         {:ok, tokens}
 
