@@ -54,5 +54,9 @@ defmodule ChatWeb.Schema.AccountTypes do
       arg(:refresh_token, non_null(:string))
       resolve(HandleErrors.handle_errors(&AccountResolver.new_access_token/3))
     end
+
+    field :profile, :user do
+      resolve(&AccountResolver.profile/3)
+    end
   end
 end
