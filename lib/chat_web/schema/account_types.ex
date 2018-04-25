@@ -48,6 +48,13 @@ defmodule ChatWeb.Schema.AccountTypes do
       resolve(&AccountResolver.login_user/3)
       middleware(HandleErrors)
     end
+
+    field :logout, :string do
+      arg(:refresh_token, non_null(:string))
+      middleware(Authentication)
+      resolve(&AccountResolver.logout/3)
+      middleware(HandleErrors)
+    end
   end
 
   @desc "Account queries"

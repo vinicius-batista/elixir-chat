@@ -42,4 +42,11 @@ defmodule ChatWeb.Resolvers.AccountResolver do
   end
 
   def profile(_, _, %{context: %{current_user: current_user}}), do: {:ok, current_user}
+
+  def logout(_, %{refresh_token: refresh_token}, %{context: %{current_user: current_user}}) do
+    case Auth.revoke_refresh_token(refresh_token, current_user.id) do
+      {:ok, _} -> {:ok, "User logout successfully."}
+      error -> error
+    end
+  end
 end

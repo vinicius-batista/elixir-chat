@@ -54,6 +54,19 @@ defmodule Chat.Accounts.Auth do
     end
   end
 
+  def revoke_refresh_token(refresh_token, user_id) do
+    clauses = %{refresh_token: refresh_token, is_revoked: false, user_id: user_id}
+
+    case Accounts.get_token_by(clauses) do
+      nil ->
+        {:error, "Could not find refresh token provided"}
+
+      token ->
+        token
+        |> Accounts.update_token(%{is_revoked: true})
+    end
+  end
+
   defp hash_password(changeset) do
     case changeset do
       %Ecto.Changeset{valid?: true, changes: %{password: pass}} ->
