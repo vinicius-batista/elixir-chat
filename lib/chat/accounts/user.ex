@@ -13,7 +13,7 @@ defmodule Chat.Accounts.User do
     field(:username, :string)
 
     timestamps()
-    has_many(:tokens, Token)
+    has_many(:tokens, Token, on_delete: :delete_all)
   end
 
   @doc false
