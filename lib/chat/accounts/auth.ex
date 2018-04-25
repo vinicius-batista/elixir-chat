@@ -70,7 +70,8 @@ defmodule Chat.Accounts.Auth do
   defp hash_password(changeset) do
     case changeset do
       %Ecto.Changeset{valid?: true, changes: %{password: pass}} ->
-        put_change(changeset, :password, Encryption.password_hashing(pass))
+        changeset
+        |> put_change(:password, Encryption.password_hashing(pass))
 
       _ ->
         changeset
