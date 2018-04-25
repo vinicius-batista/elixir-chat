@@ -12,7 +12,7 @@ defmodule Chat.Accounts.Auth do
   end
 
   def find_user_and_check_password(email, password) do
-    user = Repo.get_by(User, email: String.downcase(email))
+    user = Accounts.get_user_by(email: String.downcase(email))
 
     case check_password(user, password) do
       true -> {:ok, user}

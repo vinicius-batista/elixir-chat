@@ -38,6 +38,20 @@ defmodule Chat.Accounts do
   def get_user!(id), do: Repo.get!(User, id)
 
   @doc """
+  Gets a single user.
+
+  Raises `Ecto.NoResultsError` if the user does not exist.
+
+  ## Examples
+
+      iex> get_user_by(email: "test@test.com")
+      %User{}
+
+
+  """
+  def get_user_by(clauses), do: Repo.get_by(User, clauses)
+
+  @doc """
   Creates a user.
 
   ## Examples
