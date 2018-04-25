@@ -2,8 +2,7 @@ defmodule ChatWeb.Schema.AccountTypes do
   use Absinthe.Schema.Notation
 
   alias ChatWeb.Resolvers.AccountResolver
-  alias ChatWeb.Helpers.HandleErrors
-  alias ChatWeb.Middlewares.Authentication
+  alias ChatWeb.Middlewares.{Authentication, HandleErrors}
 
   @desc "User object"
   object :user do
@@ -40,12 +39,14 @@ defmodule ChatWeb.Schema.AccountTypes do
   object :account_mutations do
     field :register_user, :string do
       arg(:input, non_null(:register_user_input))
-      resolve(HandleErrors.handle_errors(&AccountResolver.register_user/3))
+      resolve(&AccountResolver.register_user/3)
+      middleware(HandleErrors)
     end
 
     field :login_user, :auth_tokens do
       arg(:input, non_null(:login_user_input))
-      resolve(HandleErrors.handle_errors(&AccountResolver.login_user/3))
+      resolve(&AccountResolver.login_user/3)
+      middleware(HandleErrors)
     end
   end
 
@@ -53,7 +54,8 @@ defmodule ChatWeb.Schema.AccountTypes do
   object :account_queries do
     field :new_access_token, :auth_tokens do
       arg(:refresh_token, non_null(:string))
-      resolve(HandleErrors.handle_errors(&AccountResolver.new_access_token/3))
+      resolve(&AccountResolver.new_access_token/3)
+      middleware(HandleErrors)
     end
 
     field :profile, :user do
