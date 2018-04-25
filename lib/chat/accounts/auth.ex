@@ -14,7 +14,9 @@ defmodule Chat.Accounts.Auth do
   def find_user_and_check_password(email, password) do
     user = Accounts.get_user_by(email: String.downcase(email))
 
-    case check_password(user, password) do
+    user
+    |> check_password(password)
+    |> case do
       true -> {:ok, user}
       false -> {:error, "Incorrect password"}
       error -> error
@@ -22,7 +24,9 @@ defmodule Chat.Accounts.Auth do
   end
 
   def generate_refresh_token({:ok, access_token, %{"typ" => type, "sub" => user_id}}) do
-    case Accounts.create_token(%{user_id: user_id, type: type}) do
+    %{user_id: user_id, type: type}
+    |> Accounts.create_token()
+    |> case do
       {:ok, token} ->
         tokens =
           token
@@ -38,9 +42,9 @@ defmodule Chat.Accounts.Auth do
   end
 
   def get_user_by_refresh_token(refresh_token) do
-    clauses = %{refresh_token: refresh_token, is_revoked: false}
-
-    case Accounts.get_token_by(clauses) do
+    %{refresh_token: refresh_token, is_revoked: false}
+    |> Accounts.get_token_by()
+    |> case do
       nil ->
         {:error, "Could not find user with refresh token provided"}
 
@@ -55,9 +59,9 @@ defmodule Chat.Accounts.Auth do
   end
 
   def revoke_refresh_token(refresh_token, user_id) do
-    clauses = %{refresh_token: refresh_token, is_revoked: false, user_id: user_id}
-
-    case Accounts.get_token_by(clauses) do
+    %{refresh_token: refresh_token, is_revoked: false, user_id: user_id}
+    |> Accounts.get_token_by()
+    |> case do
       nil ->
         {:error, "Could not find refresh token provided"}
 

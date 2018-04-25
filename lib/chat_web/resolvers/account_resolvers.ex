@@ -23,7 +23,9 @@ defmodule ChatWeb.Resolvers.AccountResolver do
   end
 
   def new_access_token(_, %{refresh_token: refresh_token}, _) do
-    case Auth.get_user_by_refresh_token(refresh_token) do
+    refresh_token
+    |> Auth.get_user_by_refresh_token()
+    |> case do
       {:ok, user} ->
         {:ok, access_token, %{"typ" => type}} =
           user
@@ -45,7 +47,9 @@ defmodule ChatWeb.Resolvers.AccountResolver do
   def profile(_, _, %{context: %{current_user: current_user}}), do: {:ok, current_user}
 
   def logout(_, %{refresh_token: refresh_token}, %{context: %{current_user: current_user}}) do
-    case Auth.revoke_refresh_token(refresh_token, current_user.id) do
+    refresh_token
+    |> Auth.revoke_refresh_token(current_user.id)
+    |> case do
       {:ok, _} -> {:ok, "User logout successfully."}
       error -> error
     end
