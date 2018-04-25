@@ -35,6 +35,13 @@ defmodule ChatWeb.Schema.AccountTypes do
     field(:password, non_null(:string))
   end
 
+  @desc "Input object for update_profile"
+  input_object :update_profile_input do
+    field(:email, :string)
+    field(:name, :string)
+    field(:username, :string)
+  end
+
   @desc "Account mutations"
   object :account_mutations do
     field :register_user, :string do
@@ -53,6 +60,13 @@ defmodule ChatWeb.Schema.AccountTypes do
       arg(:refresh_token, non_null(:string))
       middleware(Authentication)
       resolve(&AccountResolver.logout/3)
+      middleware(HandleErrors)
+    end
+
+    field :update_profile, :user do
+      arg(:input, non_null(:update_profile_input))
+      middleware(Authentication)
+      resolve(&AccountResolver.update_profile/3)
       middleware(HandleErrors)
     end
   end

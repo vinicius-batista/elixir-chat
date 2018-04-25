@@ -1,5 +1,6 @@
 defmodule ChatWeb.Resolvers.AccountResolver do
   alias Chat.Accounts.Auth
+  alias Chat.Accounts
   alias ChatWeb.Guardian
 
   def register_user(_, %{input: input}, _) do
@@ -48,5 +49,9 @@ defmodule ChatWeb.Resolvers.AccountResolver do
       {:ok, _} -> {:ok, "User logout successfully."}
       error -> error
     end
+  end
+
+  def update_profile(_, %{input: input}, %{context: %{current_user: current_user}}) do
+    Accounts.update_user(current_user, input)
   end
 end
