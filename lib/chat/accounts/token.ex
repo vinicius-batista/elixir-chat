@@ -8,7 +8,7 @@ defmodule Chat.Accounts.Token do
   schema "tokens" do
     field(:refresh_token, :string)
     field(:is_revoked, :boolean, default: false)
-    field(:type, :string, default: "refresh")
+    field(:type, :string, default: "bearer")
 
     timestamps()
     belongs_to(:user, User, foreign_key: :user_id)
