@@ -3,6 +3,7 @@ defmodule ChatWeb.Schema.AccountTypes do
 
   alias ChatWeb.Resolvers.AccountResolver
   alias ChatWeb.Helpers.HandleErrors
+  alias ChatWeb.Middlewares.Authentication
 
   @desc "User object"
   object :user do
@@ -56,6 +57,7 @@ defmodule ChatWeb.Schema.AccountTypes do
     end
 
     field :profile, :user do
+      middleware(Authentication)
       resolve(&AccountResolver.profile/3)
     end
   end

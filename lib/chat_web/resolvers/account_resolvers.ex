@@ -42,5 +42,4 @@ defmodule ChatWeb.Resolvers.AccountResolver do
   end
 
   def profile(_, _, %{context: %{current_user: current_user}}), do: {:ok, current_user}
-  def profile(_, _, _), do: {:error, "Invalid access token"}
 end
