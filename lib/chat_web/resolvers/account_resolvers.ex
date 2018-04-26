@@ -62,5 +62,11 @@ defmodule ChatWeb.Resolvers.AccountResolver do
   end
 
   def change_password(_, %{input: input}, %{context: %{current_user: current_user}}) do
+    current_user
+    |> Auth.check_password(input.old_password)
+    |> case do
+      true -> Accounts.update_user(current_user, %{password: input.new_password})
+      false -> {:error, "Old password doesn't match."}
+    end
   end
 end

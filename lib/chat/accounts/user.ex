@@ -5,7 +5,7 @@ defmodule Chat.Accounts.User do
 
   @email_regex ~r/^(?<user>[^\s]+)@(?<domain>[^\s]+\.[^\s]+)$/
   @required_fields ~w(email name password_hash username)a
-  @all_fields ~w()a ++ @required_fields
+  @all_fields ~w(password)a ++ @required_fields
   schema "users" do
     field(:name, :string)
     field(:email, :string)
