@@ -42,6 +42,12 @@ defmodule ChatWeb.Schema.AccountTypes do
     field(:username, :string)
   end
 
+  @desc "Input object for change_password"
+  input_object :change_password_input do
+    field(:old_password, non_null(:string))
+    field(:new_password, non_null(:string))
+  end
+
   @desc "Account mutations"
   object :account_mutations do
     field :register_user, :string do
@@ -67,6 +73,13 @@ defmodule ChatWeb.Schema.AccountTypes do
       arg(:input, non_null(:update_profile_input))
       middleware(Authentication)
       resolve(&AccountResolver.update_profile/3)
+      middleware(HandleErrors)
+    end
+
+    field :change_password, :user do
+      arg(:input, non_null(:change_password_input))
+      middleware(Authentication)
+      resolve(&AccountResolver.change_password/3)
       middleware(HandleErrors)
     end
   end

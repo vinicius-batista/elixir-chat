@@ -4,7 +4,7 @@ defmodule ChatWeb.Resolvers.AccountResolver do
   alias ChatWeb.Guardian
 
   def register_user(_, %{input: input}, _) do
-    case Auth.register(input) do
+    case Accounts.create_user(input) do
       {:ok, _user} -> {:ok, "User registred successfully."}
       error -> error
     end
@@ -59,5 +59,8 @@ defmodule ChatWeb.Resolvers.AccountResolver do
 
   def update_profile(_, %{input: input}, %{context: %{current_user: current_user}}) do
     Accounts.update_user(current_user, input)
+  end
+
+  def change_password(_, %{input: input}, %{context: %{current_user: current_user}}) do
   end
 end

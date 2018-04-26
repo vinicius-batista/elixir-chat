@@ -1,15 +1,8 @@
 defmodule Chat.Accounts.Auth do
   import Ecto.{Query, Changeset}, warn: false
   alias Chat.Repo
-  alias Chat.Accounts.{Encryption, User}
+  alias Chat.Accounts.Encryption
   alias Chat.Accounts
-
-  def register(attrs \\ %{}) do
-    %User{}
-    |> User.changeset(attrs)
-    |> hash_password
-    |> Repo.insert()
-  end
 
   def find_user_and_check_password(email, password) do
     user = Accounts.get_user_by(email: String.downcase(email))
@@ -71,21 +64,10 @@ defmodule Chat.Accounts.Auth do
     |> Accounts.update_token(%{is_revoked: true})
   end
 
-  defp hash_password(changeset) do
-    case changeset do
-      %Ecto.Changeset{valid?: true, changes: %{password: pass}} ->
-        changeset
-        |> put_change(:password, Encryption.password_hashing(pass))
-
-      _ ->
-        changeset
-    end
-  end
-
-  defp check_password(user, password) do
+  def check_password(user, password) do
     case user do
       nil -> {:error, "Could not find user with email provided"}
-      user -> Encryption.validate_password(password, user.password)
+      user -> Encryption.validate_password(password, user.password_hash)
     end
   end
 end
