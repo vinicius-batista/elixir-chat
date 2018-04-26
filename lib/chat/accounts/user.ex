@@ -21,12 +21,12 @@ defmodule Chat.Accounts.User do
   def changeset(user, attrs) do
     user
     |> cast(attrs, @all_fields)
+    |> hash_password()
     |> validate_required(@required_fields)
     |> unique_constraint(:email, name: :users_email_index)
     |> unique_constraint(:username, name: :users_username_index)
     |> validate_format(:email, @email_regex)
     |> update_change(:email, &String.downcase/1)
-    |> hash_password()
   end
 
   defp hash_password(%Ecto.Changeset{valid?: true, changes: %{password: pass}} = changeset) do

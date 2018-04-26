@@ -6,9 +6,14 @@ defmodule Chat.AccountsTest do
   describe "users" do
     alias Chat.Accounts.User
 
-    @valid_attrs %{name: "some name"}
+    @valid_attrs %{
+      name: "some name",
+      email: "email@email.com",
+      password: "test",
+      username: "username"
+    }
     @update_attrs %{name: "some updated name"}
-    @invalid_attrs %{name: nil}
+    @invalid_attrs %{name: "some name", email: "email.com", password: "test", username: nil}
 
     def user_fixture(attrs \\ %{}) do
       {:ok, user} =
@@ -21,11 +26,13 @@ defmodule Chat.AccountsTest do
 
     test "list_users/0 returns all users" do
       user = user_fixture()
+      user = %User{user | password: nil}
       assert Accounts.list_users() == [user]
     end
 
     test "get_user!/1 returns the user with given id" do
       user = user_fixture()
+      user = %User{user | password: nil}
       assert Accounts.get_user!(user.id) == user
     end
 
@@ -35,7 +42,7 @@ defmodule Chat.AccountsTest do
     end
 
     test "create_user/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Accounts.create_user(@invalid_attrs)
+      assert {:error, _} = Accounts.create_user(@invalid_attrs)
     end
 
     test "update_user/2 with valid data updates the user" do
@@ -47,7 +54,8 @@ defmodule Chat.AccountsTest do
 
     test "update_user/2 with invalid data returns error changeset" do
       user = user_fixture()
-      assert {:error, %Ecto.Changeset{}} = Accounts.update_user(user, @invalid_attrs)
+      assert {:error, _} = Accounts.update_user(user, @invalid_attrs)
+      user = %User{user | password: nil}
       assert user == Accounts.get_user!(user.id)
     end
 
@@ -67,12 +75,15 @@ defmodule Chat.AccountsTest do
     alias Chat.Accounts.Token
 
     @valid_attrs %{}
-    @update_attrs %{}
-    @invalid_attrs %{}
+    @update_attrs %{is_revoked: true}
+    @invalid_attrs %{user_id: nil}
 
     def token_fixture(attrs \\ %{}) do
+      user = user_fixture()
+
       {:ok, token} =
         attrs
+        |> Enum.into(%{user_id: user.id})
         |> Enum.into(@valid_attrs)
         |> Accounts.create_token()
 
@@ -90,11 +101,17 @@ defmodule Chat.AccountsTest do
     end
 
     test "create_token/1 with valid data creates a token" do
-      assert {:ok, %Token{} = token} = Accounts.create_token(@valid_attrs)
+      user = user_fixture()
+
+      attrs =
+        @valid_attrs
+        |> Enum.into(%{user_id: user.id})
+
+      assert {:ok, %Token{}} = Accounts.create_token(attrs)
     end
 
     test "create_token/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Accounts.create_token(@invalid_attrs)
+      assert {:error, _} = Accounts.create_token(@invalid_attrs)
     end
 
     test "update_token/2 with valid data updates the token" do
@@ -105,7 +122,7 @@ defmodule Chat.AccountsTest do
 
     test "update_token/2 with invalid data returns error changeset" do
       token = token_fixture()
-      assert {:error, %Ecto.Changeset{}} = Accounts.update_token(token, @invalid_attrs)
+      assert {:error, _} = Accounts.update_token(token, @invalid_attrs)
       assert token == Accounts.get_token!(token.id)
     end
 
