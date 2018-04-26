@@ -82,6 +82,12 @@ defmodule ChatWeb.Schema.AccountTypes do
       resolve(&AccountResolver.change_password/3)
       middleware(HandleErrors)
     end
+
+    field :delete_user, :string do
+      middleware(Authentication)
+      resolve(&AccountResolver.delete_user/3)
+      middleware(HandleErrors)
+    end
   end
 
   @desc "Account queries"

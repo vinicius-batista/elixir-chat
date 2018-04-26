@@ -69,4 +69,11 @@ defmodule ChatWeb.Resolvers.AccountResolver do
       false -> {:error, "Old password doesn't match."}
     end
   end
+
+  def delete_user(_, _, %{context: %{current_user: current_user}}) do
+    case Accounts.delete_user(current_user) do
+      {:ok, _} -> {:ok, "User deleted succesfully"}
+      error -> error
+    end
+  end
 end
