@@ -44,31 +44,31 @@ defmodule Chat.Accounts.Auth do
   def get_user_by_refresh_token(refresh_token) do
     %{refresh_token: refresh_token, is_revoked: false}
     |> Accounts.get_token_by()
-    |> case do
-      nil ->
-        {:error, "Could not find user with refresh token provided"}
+    |> load_user()
+  end
 
-      token ->
-        user =
-          token
-          |> Repo.preload(:user)
-          |> Map.get(:user)
+  defp load_user(nil), do: {:error, "Could not find user with refresh token provided"}
 
-        {:ok, user}
-    end
+  defp load_user(token) do
+    user =
+      token
+      |> Repo.preload(:user)
+      |> Map.get(:user)
+
+    {:ok, user}
   end
 
   def revoke_refresh_token(refresh_token, user_id) do
     %{refresh_token: refresh_token, is_revoked: false, user_id: user_id}
     |> Accounts.get_token_by()
-    |> case do
-      nil ->
-        {:error, "Could not find refresh token provided"}
+    |> revoke_token()
+  end
 
-      token ->
-        token
-        |> Accounts.update_token(%{is_revoked: true})
-    end
+  defp revoke_token(nil), do: {:error, "Could not find refresh token provided"}
+
+  defp revoke_token(token) do
+    token
+    |> Accounts.update_token(%{is_revoked: true})
   end
 
   defp hash_password(changeset) do
