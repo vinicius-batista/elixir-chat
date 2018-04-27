@@ -20,7 +20,8 @@ defmodule ChatWeb.ConnCase do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
       import ChatWeb.Router.Helpers
-
+      import ChatWeb.GraphqlHelper
+      import ChatWeb.AuthenticationHelper
       # The default endpoint for testing
       @endpoint ChatWeb.Endpoint
     end
