@@ -1,7 +1,7 @@
 defmodule Chat.Accounts.Auth do
   import Ecto.{Query, Changeset}, warn: false
   alias Chat.Repo
-  alias Chat.Accounts.Encryption
+  alias Chat.Accounts.{Encryption, User}
   alias Chat.Accounts
   alias ChatWeb.Guardian
 
@@ -11,13 +11,13 @@ defmodule Chat.Accounts.Auth do
     user
     |> check_password(password)
     |> case do
-      true -> {:ok, user}
+      true -> user
       false -> {:error, "Incorrect password"}
       error -> error
     end
   end
 
-  def generate_tokens({:ok, user}) do
+  def generate_tokens(%User{} = user) do
     user
     |> generate_access_token()
     |> generate_refresh_token()
