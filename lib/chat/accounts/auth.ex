@@ -3,6 +3,7 @@ defmodule Chat.Accounts.Auth do
   alias Chat.Repo
   alias Chat.Accounts.Encryption
   alias Chat.Accounts
+  alias ChatWeb.Guardian
 
   def find_user_and_check_password(email, password) do
     user = Accounts.get_user_by(email: String.downcase(email))
@@ -16,7 +17,15 @@ defmodule Chat.Accounts.Auth do
     end
   end
 
-  def generate_refresh_token({:ok, access_token, %{"typ" => type, "sub" => user_id}}) do
+  def generate_tokens({:ok, user}) do
+    user
+    |> generate_access_token()
+    |> generate_refresh_token()
+  end
+
+  def generate_tokens(error), do: error
+
+  defp generate_refresh_token({:ok, access_token, %{"typ" => type, "sub" => user_id}}) do
     %{user_id: user_id, type: type}
     |> Accounts.create_token()
     |> case do
@@ -34,6 +43,22 @@ defmodule Chat.Accounts.Auth do
     end
   end
 
+  def generate_new_access_token({:ok, user}, refresh_token) do
+    {:ok, access_token, %{"typ" => type}} =
+      user
+      |> generate_access_token()
+
+    tokens =
+      %{}
+      |> Map.put(:refresh_token, refresh_token)
+      |> Map.put(:access_token, access_token)
+      |> Map.put(:type, type)
+
+    {:ok, tokens}
+  end
+
+  def generate_new_access_token(error, _), do: error
+
   def get_user_by_refresh_token(refresh_token) do
     %{refresh_token: refresh_token, is_revoked: false}
     |> Accounts.get_token_by()
@@ -50,6 +75,8 @@ defmodule Chat.Accounts.Auth do
 
     {:ok, user}
   end
+
+  defp generate_access_token(user), do: Guardian.encode_and_sign(user, %{}, token_type: :bearer)
 
   def revoke_refresh_token(refresh_token, user_id) do
     %{refresh_token: refresh_token, is_revoked: false, user_id: user_id}
