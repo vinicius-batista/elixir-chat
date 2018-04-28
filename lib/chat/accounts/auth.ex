@@ -1,9 +1,8 @@
 defmodule Chat.Accounts.Auth do
   import Ecto.{Query, Changeset}, warn: false
   alias Chat.Repo
-  alias Chat.Accounts.Encryption
+  alias Chat.Accounts.{Encryption, AuthToken}
   alias Chat.Accounts
-  alias ChatWeb.Guardian
 
   def find_user_and_check_password(email, password) do
     user = Accounts.get_user_by(email: String.downcase(email))
@@ -18,29 +17,15 @@ defmodule Chat.Accounts.Auth do
   end
 
   def generate_tokens(user) do
-    with {:ok, access_token, claims} <- generate_access_token(user) do
-      generate_refresh_token(access_token, claims)
-    end
-  end
-
-  defp generate_refresh_token(access_token, %{"typ" => type, "sub" => user_id}) do
-    attrs = %{user_id: user_id, type: type}
-
-    with {:ok, token} <- Accounts.create_token(attrs) do
-      tokens =
-        token
-        |> Map.from_struct()
-        |> Map.put(:access_token, access_token)
-        |> Map.take([:access_token, :refresh_token, :type])
-
-      {:ok, tokens}
+    with {:ok, access_token, claims} <- AuthToken.generate_access_token(user) do
+      AuthToken.generate_refresh_token(access_token, claims)
     end
   end
 
   def generate_new_access_token(user, refresh_token) do
     {:ok, access_token, %{"typ" => type}} =
       user
-      |> generate_access_token()
+      |> AuthToken.generate_access_token()
 
     tokens =
       %{}
@@ -68,19 +53,10 @@ defmodule Chat.Accounts.Auth do
     {:ok, user}
   end
 
-  defp generate_access_token(user), do: Guardian.encode_and_sign(user, %{}, token_type: :bearer)
-
   def revoke_refresh_token(refresh_token, user_id) do
     %{refresh_token: refresh_token, is_revoked: false, user_id: user_id}
     |> Accounts.get_token_by()
-    |> revoke_token()
-  end
-
-  defp revoke_token(nil), do: {:error, "Could not find refresh token provided"}
-
-  defp revoke_token(token) do
-    token
-    |> Accounts.update_token(%{is_revoked: true})
+    |> AuthToken.revoke_token()
   end
 
   def check_password(user, password) do

@@ -18,8 +18,17 @@ defmodule Chat.Accounts.Token do
   def changeset(token, attrs) do
     token
     |> cast(attrs, @all_fields)
-    |> put_change(:refresh_token, Ecto.UUID.generate())
+    |> generate_refresh_token()
     |> validate_required(@required_fields)
     |> unique_constraint(:refresh_token, name: :tokens_refresh_token_index)
+  end
+
+  defp generate_refresh_token(changeset) do
+    with nil <- get_field(changeset, :refresh_token, nil) do
+      changeset
+      |> put_change(:refresh_token, Ecto.UUID.generate())
+    else
+      _ -> changeset
+    end
   end
 end
