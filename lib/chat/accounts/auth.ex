@@ -1,7 +1,7 @@
 defmodule Chat.Accounts.Auth do
   import Ecto.{Query, Changeset}, warn: false
   alias Chat.Repo
-  alias Chat.Accounts.{Encryption, User}
+  alias Chat.Accounts.Encryption
   alias Chat.Accounts
   alias ChatWeb.Guardian
 
@@ -11,39 +11,33 @@ defmodule Chat.Accounts.Auth do
     user
     |> check_password(password)
     |> case do
-      true -> user
+      true -> {:ok, user}
       false -> {:error, "Incorrect password"}
       error -> error
     end
   end
 
-  def generate_tokens(%User{} = user) do
-    user
-    |> generate_access_token()
-    |> generate_refresh_token()
-  end
-
-  def generate_tokens(error), do: error
-
-  defp generate_refresh_token({:ok, access_token, %{"typ" => type, "sub" => user_id}}) do
-    %{user_id: user_id, type: type}
-    |> Accounts.create_token()
-    |> case do
-      {:ok, token} ->
-        tokens =
-          token
-          |> Map.from_struct()
-          |> Map.put(:access_token, access_token)
-          |> Map.take([:access_token, :refresh_token, :type])
-
-        {:ok, tokens}
-
-      error ->
-        error
+  def generate_tokens(user) do
+    with {:ok, access_token, claims} <- generate_access_token(user) do
+      generate_refresh_token(access_token, claims)
     end
   end
 
-  def generate_new_access_token({:ok, user}, refresh_token) do
+  defp generate_refresh_token(access_token, %{"typ" => type, "sub" => user_id}) do
+    attrs = %{user_id: user_id, type: type}
+
+    with {:ok, token} <- Accounts.create_token(attrs) do
+      tokens =
+        token
+        |> Map.from_struct()
+        |> Map.put(:access_token, access_token)
+        |> Map.take([:access_token, :refresh_token, :type])
+
+      {:ok, tokens}
+    end
+  end
+
+  def generate_new_access_token(user, refresh_token) do
     {:ok, access_token, %{"typ" => type}} =
       user
       |> generate_access_token()
@@ -56,8 +50,6 @@ defmodule Chat.Accounts.Auth do
 
     {:ok, tokens}
   end
-
-  def generate_new_access_token(error, _), do: error
 
   def get_user_by_refresh_token(refresh_token) do
     %{refresh_token: refresh_token, is_revoked: false}
