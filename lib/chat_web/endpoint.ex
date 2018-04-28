@@ -1,5 +1,6 @@
 defmodule ChatWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :chat
+  use Absinthe.Phoenix.Endpoint
 
   socket("/socket", ChatWeb.UserSocket)
 
