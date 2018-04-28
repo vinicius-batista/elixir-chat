@@ -9,6 +9,8 @@ defmodule ChatWeb.GraphqlHelper do
     |> json_response(200)
   end
 
+  def get_query_data(conn, query), do: conn["data"][query]
+
   defp build_query(query, variables) do
     %{
       query: query,
