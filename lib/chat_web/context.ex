@@ -3,8 +3,7 @@ defmodule ChatWeb.Context do
 
   import Plug.Conn
   alias ChatWeb.Guardian
-  alias Chat.Rooms.Room
-  alias Chat.Accounts.User
+  alias ChatWeb.Helpers.BuildLoader
 
   def init(opts), do: opts
 
@@ -20,24 +19,7 @@ defmodule ChatWeb.Context do
       ["Bearer " <> token] -> authorize(token)
       _ -> %{}
     end
-    |> build_loader()
-  end
-
-  def build_loader(ctx) do
-    loader =
-      Dataloader.new()
-      |> Dataloader.add_source(Room, data())
-      |> Dataloader.add_source(User, data())
-
-    Map.put(ctx, :loader, loader)
-  end
-
-  defp data() do
-    Dataloader.Ecto.new(Chat.Repo, query: &query/2)
-  end
-
-  defp query(queryable, _params) do
-    queryable
+    |> BuildLoader.build()
   end
 
   defp authorize(token) do
