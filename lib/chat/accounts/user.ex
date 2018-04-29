@@ -2,6 +2,7 @@ defmodule Chat.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
   alias Chat.Accounts.{Token, Encryption}
+  alias Chat.Rooms.Room
 
   @email_regex ~r/^(?<user>[^\s]+)@(?<domain>[^\s]+\.[^\s]+)$/
   @required_fields ~w(email name password_hash username)a
@@ -15,6 +16,7 @@ defmodule Chat.Accounts.User do
 
     timestamps()
     has_many(:tokens, Token, on_delete: :delete_all)
+    has_many(:rooms, Room, on_delete: :delete_all, foreign_key: :owner_id)
   end
 
   @doc false
