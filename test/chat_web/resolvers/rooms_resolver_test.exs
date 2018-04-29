@@ -62,6 +62,31 @@ defmodule ChatWeb.RoomsResolverTest do
     assert response["description"] == "nice room description"
   end
 
+  test "rooms returns list of room", %{conn: conn, user: user} do
+    query = "
+      query($name: String){
+        rooms(name: $name) {
+          id,
+          name,
+          description
+        }
+      }
+    "
+
+    variables = %{
+      name: "room"
+    }
+
+    [room] =
+      conn
+      |> authenticate_user(user)
+      |> graphql_query(query: query, variables: variables)
+      |> get_query_data("rooms")
+
+    assert room["description"] == "room description"
+    assert room["name"] == "room name"
+  end
+
   test "update_room returns room object", %{conn: conn, user: user, room: room} do
     variables = %{
       input: %{

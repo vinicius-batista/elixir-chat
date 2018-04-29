@@ -9,6 +9,7 @@ defmodule ChatWeb.Schema do
 
   query do
     import_fields(:account_queries)
+    import_fields(:rooms_queries)
   end
 
   mutation do

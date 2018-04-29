@@ -48,4 +48,14 @@ defmodule ChatWeb.Schema.RoomsTypes do
       middleware(HandleErrors)
     end
   end
+
+  object :rooms_queries do
+    field :rooms, list_of(:room) do
+      arg(:name, :string)
+      arg(:limit, :integer, default_value: 20)
+      arg(:cursor, :datetime, default_value: DateTime.utc_now())
+      middleware(Authentication)
+      resolve(&RoomsResolvers.get_rooms/3)
+    end
+  end
 end

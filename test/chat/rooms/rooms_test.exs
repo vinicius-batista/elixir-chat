@@ -34,9 +34,9 @@ defmodule Chat.RoomsTest do
       room
     end
 
-    test "list_rooms/0 returns all rooms" do
+    test "list_rooms/3 returns all rooms with query" do
       room = room_fixture()
-      assert Rooms.list_rooms() == [room]
+      assert Rooms.list_rooms("some") == [room]
     end
 
     test "get_room!/1 returns the room with given id" do

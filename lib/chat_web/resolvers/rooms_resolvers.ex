@@ -23,10 +23,10 @@ defmodule ChatWeb.Resolvers.RoomsResolvers do
     else
       _ -> {:error, "Room not found"}
     end
+  end
 
-    # case Rooms.get_room_by(id: id, owner_id: current_user.id) do
-    #   nil -> {:error, "Room not found"}
-    #   room -> Rooms.delete_room(room)
-    # end
+  def get_rooms(_, %{name: name, cursor: cursor, limit: limit}, _) do
+    rooms = Rooms.list_rooms(name, limit, cursor)
+    {:ok, rooms}
   end
 end
