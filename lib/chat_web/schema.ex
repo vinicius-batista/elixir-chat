@@ -19,6 +19,10 @@ defmodule ChatWeb.Schema do
     import_fields(:messages_mutations)
   end
 
+  subscription do
+    import_fields(:messages_subscriptions)
+  end
+
   def plugins do
     [Absinthe.Middleware.Dataloader] ++ Absinthe.Plugin.defaults()
   end

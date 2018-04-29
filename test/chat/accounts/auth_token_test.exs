@@ -29,6 +29,12 @@ defmodule Chat.AuthTokenTest do
     assert reason == "Unknow resource type"
   end
 
+  test "authorize returns user", %{user: user} do
+    {:ok, access_token, _claims} = AuthToken.generate_access_token(user)
+    %{current_user: current_user} = AuthToken.authorize(access_token)
+    assert user == current_user
+  end
+
   test "generate_refresh_token returns auth tokens", %{user: user} do
     access_token = "random-string"
     claims = %{"typ" => "bearer", "sub" => user.id}

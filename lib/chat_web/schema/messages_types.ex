@@ -31,4 +31,25 @@ defmodule ChatWeb.Schema.MessagesTypes do
       middleware(HandleErrors)
     end
   end
+
+  object :messages_subscriptions do
+    field :message_added, :message do
+      arg(:room_id, non_null(:integer))
+
+      config(fn args, %{context: context} ->
+        if Map.has_key?(context, :current_user) do
+          {:ok, topic: args.room_id}
+        else
+          {:ok, topic: nil}
+        end
+      end)
+
+      trigger(
+        :create_message,
+        topic: fn message ->
+          message.room_id
+        end
+      )
+    end
+  end
 end

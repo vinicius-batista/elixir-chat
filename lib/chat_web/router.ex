@@ -13,6 +13,7 @@ defmodule ChatWeb.Router do
       "/graphiql",
       Absinthe.Plug.GraphiQL,
       schema: ChatWeb.Schema,
+      socket: ChatWeb.UserSocket,
       interface: :advanced
     )
 
