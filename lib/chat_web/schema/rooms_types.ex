@@ -12,6 +12,8 @@ defmodule ChatWeb.Schema.RoomsTypes do
     field(:name, :string)
     field(:description, :string)
     field(:owner, :user, resolve: dataloader(User))
+    field(:inserted_at, :string)
+    field(:updated_at, :string)
   end
 
   input_object :create_room_input do
@@ -53,7 +55,7 @@ defmodule ChatWeb.Schema.RoomsTypes do
     field :rooms, list_of(:room) do
       arg(:name, :string)
       arg(:limit, :integer, default_value: 20)
-      arg(:cursor, :datetime, default_value: DateTime.utc_now())
+      arg(:cursor, :string, default_value: DateTime.utc_now())
       middleware(Authentication)
       resolve(&RoomsResolvers.get_rooms/3)
     end
