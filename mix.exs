@@ -42,7 +42,6 @@ defmodule Chat.Mixfile do
       {:absinthe, "~> 1.4", override: true},
       {:absinthe_phoenix, "~> 1.4"},
       {:absinthe_plug, "~> 1.4"},
-      {:absinthe_ecto, ">= 0.0.0"},
       {:bcrypt_elixir, "~> 1.0"},
       {:guardian, "~> 1.0"}
     ]
