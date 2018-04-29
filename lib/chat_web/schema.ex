@@ -14,4 +14,8 @@ defmodule ChatWeb.Schema do
   mutation do
     import_fields(:account_mutations)
   end
+
+  def plugins do
+    [Absinthe.Middleware.Dataloader] ++ Absinthe.Plugin.defaults()
+  end
 end

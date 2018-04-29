@@ -1,8 +1,10 @@
 defmodule ChatWeb.Schema.AccountsTypes do
   use Absinthe.Schema.Notation
+  import Absinthe.Resolution.Helpers, only: [dataloader: 1]
 
   alias ChatWeb.Resolvers.AccountsResolver
   alias ChatWeb.Middlewares.{Authentication, HandleErrors}
+  alias Chat.Rooms.Room
 
   @desc "User object"
   object :user do
@@ -12,6 +14,7 @@ defmodule ChatWeb.Schema.AccountsTypes do
     field(:username, :string)
     field(:inserted_at, :string)
     field(:updated_at, :string)
+    field(:rooms, list_of(:room), resolve: dataloader(Room))
   end
 
   @desc "Auth tokens"

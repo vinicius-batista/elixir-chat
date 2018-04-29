@@ -19,4 +19,12 @@ defmodule Chat.Rooms.Room do
     |> cast(attrs, @all_fields)
     |> validate_required(@required_fields)
   end
+
+  def data() do
+    Dataloader.Ecto.new(Chat.Repo, query: &query/2)
+  end
+
+  def query(queryable, _params) do
+    queryable
+  end
 end
