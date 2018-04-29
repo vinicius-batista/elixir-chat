@@ -16,6 +16,7 @@ defmodule ChatWeb.Schema do
   mutation do
     import_fields(:account_mutations)
     import_fields(:rooms_mutations)
+    import_fields(:messages_mutations)
   end
 
   def plugins do
