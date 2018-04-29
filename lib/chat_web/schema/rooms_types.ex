@@ -40,5 +40,12 @@ defmodule ChatWeb.Schema.RoomsTypes do
       resolve(&RoomsResolvers.update_room/3)
       middleware(HandleErrors)
     end
+
+    field :delete_room, :string do
+      arg(:id, :integer)
+      middleware(Authentication)
+      resolve(&RoomsResolvers.delete_room/3)
+      middleware(HandleErrors)
+    end
   end
 end

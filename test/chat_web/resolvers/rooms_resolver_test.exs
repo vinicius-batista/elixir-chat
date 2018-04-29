@@ -90,12 +90,52 @@ defmodule ChatWeb.RoomsResolverTest do
       }
     }
 
-    response =
+    %{"message" => message} =
       conn
       |> authenticate_user(user)
       |> graphql_query(query: @update_query, variables: variables)
-      |> get_query_data("updateRoom")
+      |> get_query_errors("deleteRoom")
 
-    assert response == nil
+    assert message == "Room not found"
+  end
+
+  test "delete_room returns room object", %{conn: conn, user: user, room: room} do
+    query = "
+      mutation ($id:String) {
+        deleteRoom(id:$id)
+      }
+    "
+
+    variables = %{
+      id: room.id
+    }
+
+    response =
+      conn
+      |> authenticate_user(user)
+      |> graphql_query(query: query, variables: variables)
+      |> get_query_data("deleteRoom")
+
+    assert response == "Room deleted successfully."
+  end
+
+  test "delete_room returns error", %{conn: conn, user: user} do
+    query = "
+      mutation ($id:String) {
+        deleteRoom(id:$id)
+      }
+    "
+
+    variables = %{
+      id: 0
+    }
+
+    %{"message" => message} =
+      conn
+      |> authenticate_user(user)
+      |> graphql_query(query: query, variables: variables)
+      |> get_query_errors("deleteRoom")
+
+    assert message == "Room not found"
   end
 end

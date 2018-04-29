@@ -15,4 +15,18 @@ defmodule ChatWeb.Resolvers.RoomsResolvers do
       room -> Rooms.update_room(room, input)
     end
   end
+
+  def delete_room(_, %{id: id}, %{context: %{current_user: current_user}}) do
+    with room when is_map(room) <- Rooms.get_room_by(id: id, owner_id: current_user.id),
+         {:ok, _} <- Rooms.delete_room(room) do
+      {:ok, "Room deleted successfully."}
+    else
+      _ -> {:error, "Room not found"}
+    end
+
+    # case Rooms.get_room_by(id: id, owner_id: current_user.id) do
+    #   nil -> {:error, "Room not found"}
+    #   room -> Rooms.delete_room(room)
+    # end
+  end
 end

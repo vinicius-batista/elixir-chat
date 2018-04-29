@@ -11,6 +11,8 @@ defmodule ChatWeb.GraphqlHelper do
 
   def get_query_data(conn, query), do: conn["data"][query]
 
+  def get_query_errors(conn, _), do: conn["errors"] |> Enum.at(0)
+
   defp build_query(query, variables) do
     %{
       query: query,
