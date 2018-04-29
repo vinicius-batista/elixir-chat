@@ -1,6 +1,6 @@
 defmodule ChatWeb.AccountResolverTest do
   use ChatWeb.ConnCase
-  alias Chat.Accounts
+  alias Chat.{Accounts, Rooms}
 
   @valid_attrs %{
     name: "some name",
@@ -12,6 +12,15 @@ defmodule ChatWeb.AccountResolverTest do
   setup do
     {:ok, user} = Accounts.create_user(@valid_attrs)
     {:ok, token} = Accounts.create_token(%{user_id: user.id})
+
+    room_attrs = %{
+      name: "room name",
+      description: "room description",
+      owner_id: user.id
+    }
+
+    {:ok, _room} = Rooms.create_room(room_attrs)
+
     {:ok, %{user: %Accounts.User{user | password: nil}, token: token}}
   end
 
@@ -114,6 +123,40 @@ defmodule ChatWeb.AccountResolverTest do
     assert response["id"] == to_string(user.id)
     assert response["name"] == user.name
     assert response["username"] == user.username
+  end
+
+  test "profile return user info with room", %{conn: conn, user: user} do
+    query = "
+      query {
+        profile {
+          id,
+          name,
+          insertedAt,
+          username,
+          rooms {
+            name,
+            description,
+            ownerId
+          }
+        }
+      }
+    "
+
+    response =
+      conn
+      |> authenticate_user(user)
+      |> graphql_query(query: query)
+      |> get_query_data("profile")
+
+    [room] = response["rooms"]
+
+    assert response["id"] == to_string(user.id)
+    assert response["name"] == user.name
+    assert response["username"] == user.username
+
+    assert room["ownerId"] == to_string(user.id)
+    assert room["name"] == "room name"
+    assert room["description"] == "room description"
   end
 
   test "logout returns string for success", %{conn: conn, user: user, token: token} do
