@@ -44,6 +44,11 @@ defmodule Chat.RoomsTest do
       assert Rooms.get_room!(room.id) == room
     end
 
+    test "get_room_by/1 returns the room with given id and owner_id" do
+      room = room_fixture()
+      assert Rooms.get_room_by(id: room.id, owner_id: room.owner_id) == room
+    end
+
     test "create_room/1 with valid data creates a room" do
       user = user_fixture()
 

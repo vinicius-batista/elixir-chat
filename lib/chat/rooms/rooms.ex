@@ -38,6 +38,22 @@ defmodule Chat.Rooms do
   def get_room!(id), do: Repo.get!(Room, id)
 
   @doc """
+  Gets a single room.
+
+  Raises `Ecto.NoResultsError` if the Room does not exist.
+
+  ## Examples
+
+      iex> get_room_by!(owner_id: 123)
+      %Room{}
+
+      iex> get_room_by!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_room_by(clauses), do: Repo.get_by(Room, clauses)
+
+  @doc """
   Creates a room.
 
   ## Examples
