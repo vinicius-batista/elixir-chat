@@ -24,4 +24,11 @@ defmodule Chat.Accounts.AuthToken do
     token
     |> Accounts.update_token(%{is_revoked: true})
   end
+
+  def authorize(token) do
+    case Guardian.resource_from_token(token) do
+      {:error, _} -> %{}
+      {:ok, current_user, _claims} -> %{current_user: current_user}
+    end
+  end
 end

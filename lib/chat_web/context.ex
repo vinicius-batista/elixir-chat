@@ -2,8 +2,8 @@ defmodule ChatWeb.Context do
   @behaviour Plug
 
   import Plug.Conn
-  alias ChatWeb.Guardian
   alias ChatWeb.Helpers.BuildLoader
+  alias Chat.Accounts.AuthToken
 
   def init(opts), do: opts
 
@@ -16,16 +16,9 @@ defmodule ChatWeb.Context do
     conn
     |> get_req_header("authorization")
     |> case do
-      ["Bearer " <> token] -> authorize(token)
+      ["Bearer " <> token] -> AuthToken.authorize(token)
       _ -> %{}
     end
     |> BuildLoader.build()
-  end
-
-  defp authorize(token) do
-    case Guardian.resource_from_token(token) do
-      {:error, _} -> %{}
-      {:ok, current_user, _claims} -> %{current_user: current_user}
-    end
   end
 end

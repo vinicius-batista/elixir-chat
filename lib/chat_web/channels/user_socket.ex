@@ -1,7 +1,7 @@
 defmodule ChatWeb.UserSocket do
   use Phoenix.Socket
-  use Absinthe.Phoenix.Socket, schema: MyAppWeb.Schema
-
+  use Absinthe.Phoenix.Socket, schema: ChatWeb.Schema
+  alias Chat.Accounts.AuthToken
   ## Channels
   # channel "room:*", ChatWeb.RoomChannel
 
@@ -20,7 +20,16 @@ defmodule ChatWeb.UserSocket do
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
-  def connect(_params, socket) do
+  def connect(params, socket) do
+    %{"Authorization" => authorization} = params
+
+    context =
+      case authorization do
+        "Bearer " <> token -> AuthToken.authorize(token)
+        _ -> %{}
+      end
+
+    socket = Absinthe.Phoenix.Socket.put_options(socket, context: context)
     {:ok, socket}
   end
 
