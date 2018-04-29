@@ -43,7 +43,8 @@ defmodule Chat.Mixfile do
       {:absinthe_phoenix, "~> 1.4"},
       {:absinthe_plug, "~> 1.4"},
       {:bcrypt_elixir, "~> 1.0"},
-      {:guardian, "~> 1.0"}
+      {:guardian, "~> 1.0"},
+      {:dataloader, "~> 1.0.0"}
     ]
   end
 
