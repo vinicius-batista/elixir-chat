@@ -1,5 +1,4 @@
 defmodule Chat.Accounts.Auth do
-  import Ecto.{Query, Changeset}, warn: false
   alias Chat.Repo
   alias Chat.Accounts.{Encryption, AuthToken}
   alias Chat.Accounts
