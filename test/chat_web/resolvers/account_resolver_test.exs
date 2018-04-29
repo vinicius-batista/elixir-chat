@@ -136,7 +136,7 @@ defmodule ChatWeb.AccountResolverTest do
           rooms {
             name,
             description,
-            ownerId
+            id
           }
         }
       }
@@ -154,7 +154,6 @@ defmodule ChatWeb.AccountResolverTest do
     assert response["name"] == user.name
     assert response["username"] == user.username
 
-    assert room["ownerId"] == to_string(user.id)
     assert room["name"] == "room name"
     assert room["description"] == "room description"
   end

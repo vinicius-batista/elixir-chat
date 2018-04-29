@@ -4,6 +4,7 @@ defmodule ChatWeb.Context do
   import Plug.Conn
   alias ChatWeb.Guardian
   alias Chat.Rooms.Room
+  alias Chat.Accounts.User
 
   def init(opts), do: opts
 
@@ -26,6 +27,7 @@ defmodule ChatWeb.Context do
     loader =
       Dataloader.new()
       |> Dataloader.add_source(Room, Room.data())
+      |> Dataloader.add_source(User, User.data())
 
     Map.put(ctx, :loader, loader)
   end
