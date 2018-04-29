@@ -3,6 +3,7 @@ defmodule ChatWeb.Schema.RoomsTypes do
   import Absinthe.Resolution.Helpers, only: [dataloader: 1]
 
   alias Chat.Accounts.User
+  alias Chat.Rooms.Message
   alias ChatWeb.Middlewares.{Authentication, HandleErrors}
   alias ChatWeb.Resolvers.RoomsResolvers
 
@@ -11,9 +12,15 @@ defmodule ChatWeb.Schema.RoomsTypes do
     field(:id, :id)
     field(:name, :string)
     field(:description, :string)
-    field(:owner, :user, resolve: dataloader(User))
     field(:inserted_at, :string)
     field(:updated_at, :string)
+    field(:owner, :user, resolve: dataloader(User))
+
+    field :messages, list_of(:message) do
+      arg(:limit, :integer, default_value: 20)
+      arg(:cursor, :string, default_value: DateTime.utc_now())
+      resolve(dataloader(Message))
+    end
   end
 
   input_object :create_room_input do

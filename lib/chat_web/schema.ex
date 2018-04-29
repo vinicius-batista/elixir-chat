@@ -1,11 +1,12 @@
 defmodule ChatWeb.Schema do
   use Absinthe.Schema
 
-  alias ChatWeb.Schema.{AccountsTypes, RoomsTypes}
+  alias ChatWeb.Schema.{AccountsTypes, RoomsTypes, MessagesTypes}
 
   import_types(Absinthe.Type.Custom)
   import_types(AccountsTypes)
   import_types(RoomsTypes)
+  import_types(MessagesTypes)
 
   query do
     import_fields(:account_queries)
