@@ -68,7 +68,11 @@ defmodule ChatWeb.RoomsResolverTest do
         rooms(name: $name) {
           id,
           name,
-          description
+          description,
+          owner {
+            id,
+            name
+          }
         }
       }
     "
@@ -85,6 +89,8 @@ defmodule ChatWeb.RoomsResolverTest do
 
     assert room["description"] == "room description"
     assert room["name"] == "room name"
+    assert room["owner"]["id"] == to_string(user.id)
+    assert room["owner"]["name"] == user.name
   end
 
   test "update_room returns room object", %{conn: conn, user: user, room: room} do

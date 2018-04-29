@@ -37,12 +37,4 @@ defmodule Chat.Accounts.User do
   end
 
   defp hash_password(changeset), do: changeset
-
-  def data() do
-    Dataloader.Ecto.new(Chat.Repo, query: &query/2)
-  end
-
-  def query(queryable, _params) do
-    queryable
-  end
 end

@@ -20,8 +20,8 @@ defmodule Chat.Rooms do
   def list_rooms(name, limit \\ 20, cursor \\ DateTime.utc_now()) do
     from(
       room in Room,
-      where: like(room.name, ^"%#{name}%") and room.inserted_at <= ^cursor,
-      order_by: [asc: room.id],
+      where: like(room.name, ^"%#{name}%") and room.inserted_at < ^cursor,
+      order_by: [desc: room.id],
       limit: ^limit
     )
     |> Repo.all()

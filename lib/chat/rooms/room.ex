@@ -10,7 +10,7 @@ defmodule Chat.Rooms.Room do
     field(:name, :string)
 
     timestamps()
-    belongs_to(:user, User, foreign_key: :owner_id)
+    belongs_to(:owner, User, foreign_key: :owner_id)
   end
 
   @doc false
@@ -18,13 +18,5 @@ defmodule Chat.Rooms.Room do
     room
     |> cast(attrs, @all_fields)
     |> validate_required(@required_fields)
-  end
-
-  def data() do
-    Dataloader.Ecto.new(Chat.Repo, query: &query/2)
-  end
-
-  def query(queryable, _params) do
-    queryable
   end
 end
