@@ -1,7 +1,7 @@
-defmodule ChatWeb.Schema.AccountTypes do
+defmodule ChatWeb.Schema.AccountsTypes do
   use Absinthe.Schema.Notation
 
-  alias ChatWeb.Resolvers.AccountResolver
+  alias ChatWeb.Resolvers.AccountsResolver
   alias ChatWeb.Middlewares.{Authentication, HandleErrors}
 
   @desc "User object"
@@ -52,40 +52,40 @@ defmodule ChatWeb.Schema.AccountTypes do
   object :account_mutations do
     field :register_user, :string do
       arg(:input, non_null(:register_user_input))
-      resolve(&AccountResolver.register_user/3)
+      resolve(&AccountsResolver.register_user/3)
       middleware(HandleErrors)
     end
 
     field :login_user, :auth_tokens do
       arg(:input, non_null(:login_user_input))
-      resolve(&AccountResolver.login_user/3)
+      resolve(&AccountsResolver.login_user/3)
       middleware(HandleErrors)
     end
 
     field :logout, :string do
       arg(:refresh_token, non_null(:string))
       middleware(Authentication)
-      resolve(&AccountResolver.logout/3)
+      resolve(&AccountsResolver.logout/3)
       middleware(HandleErrors)
     end
 
     field :update_profile, :user do
       arg(:input, non_null(:update_profile_input))
       middleware(Authentication)
-      resolve(&AccountResolver.update_profile/3)
+      resolve(&AccountsResolver.update_profile/3)
       middleware(HandleErrors)
     end
 
     field :change_password, :user do
       arg(:input, non_null(:change_password_input))
       middleware(Authentication)
-      resolve(&AccountResolver.change_password/3)
+      resolve(&AccountsResolver.change_password/3)
       middleware(HandleErrors)
     end
 
     field :delete_user, :string do
       middleware(Authentication)
-      resolve(&AccountResolver.delete_user/3)
+      resolve(&AccountsResolver.delete_user/3)
       middleware(HandleErrors)
     end
   end
@@ -94,13 +94,13 @@ defmodule ChatWeb.Schema.AccountTypes do
   object :account_queries do
     field :new_access_token, :auth_tokens do
       arg(:refresh_token, non_null(:string))
-      resolve(&AccountResolver.new_access_token/3)
+      resolve(&AccountsResolver.new_access_token/3)
       middleware(HandleErrors)
     end
 
     field :profile, :user do
       middleware(Authentication)
-      resolve(&AccountResolver.profile/3)
+      resolve(&AccountsResolver.profile/3)
     end
   end
 end

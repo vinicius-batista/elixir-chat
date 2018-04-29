@@ -2,7 +2,7 @@ defmodule ChatWeb.Schema do
   use Absinthe.Schema
 
   import_types(Absinthe.Type.Custom)
-  import_types(ChatWeb.Schema.AccountTypes)
+  import_types(ChatWeb.Schema.AccountsTypes)
 
   query do
     import_fields(:account_queries)

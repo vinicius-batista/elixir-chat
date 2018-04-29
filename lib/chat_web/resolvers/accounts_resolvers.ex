@@ -1,4 +1,4 @@
-defmodule ChatWeb.Resolvers.AccountResolver do
+defmodule ChatWeb.Resolvers.AccountsResolver do
   alias Chat.Accounts.Auth
   alias Chat.Accounts
 
