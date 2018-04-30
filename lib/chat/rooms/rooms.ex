@@ -135,8 +135,14 @@ defmodule Chat.Rooms do
       [%Message{}, ...]
 
   """
-  def list_messages do
-    Repo.all(Message)
+  def list_messages(room_id, limit \\ 20, cursor \\ DateTime.utc_now()) do
+    from(
+      message in Message,
+      where: message.room_id == ^room_id and message.inserted_at < ^cursor,
+      order_by: [desc: message.id],
+      limit: ^limit
+    )
+    |> Repo.all()
   end
 
   @doc """

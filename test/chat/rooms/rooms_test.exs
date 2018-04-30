@@ -112,7 +112,7 @@ defmodule Chat.RoomsTest do
 
     test "list_messages/0 returns all messages" do
       message = message_fixture()
-      assert Rooms.list_messages() == [message]
+      assert Rooms.list_messages(message.room_id) == [message]
     end
 
     test "get_message!/1 returns the message with given id" do
