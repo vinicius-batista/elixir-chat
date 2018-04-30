@@ -2,6 +2,7 @@ defmodule ChatWeb.UserSocket do
   use Phoenix.Socket
   use Absinthe.Phoenix.Socket, schema: ChatWeb.Schema
   alias Chat.Accounts.AuthToken
+  alias ChatWeb.Helpers.BuildLoader
   ## Channels
   # channel "room:*", ChatWeb.RoomChannel
 
@@ -28,6 +29,7 @@ defmodule ChatWeb.UserSocket do
         "Bearer " <> token -> AuthToken.authorize(token)
         _ -> %{}
       end
+      |> BuildLoader.build()
 
     socket = Absinthe.Phoenix.Socket.put_options(socket, context: context)
     {:ok, socket}

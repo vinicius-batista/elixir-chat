@@ -3,7 +3,7 @@ defmodule ChatWeb.Schema.MessagesTypes do
   import Absinthe.Resolution.Helpers, only: [dataloader: 1]
 
   alias Chat.Accounts.User
-  alias Chat.Room.Room
+  alias Chat.Rooms.Room
   alias ChatWeb.Middlewares.{Authentication, HandleErrors}
   alias ChatWeb.Resolvers.MessagesResolvers
 
