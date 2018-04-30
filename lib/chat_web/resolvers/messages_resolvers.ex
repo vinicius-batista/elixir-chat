@@ -8,4 +8,12 @@ defmodule ChatWeb.Resolvers.MessagesResolvers do
 
     Rooms.create_message(attrs)
   end
+
+  def message_added(%{room_id: room_id}, %{context: context}) do
+    if Map.has_key?(context, :current_user) do
+      {:ok, topic: room_id}
+    else
+      {:ok, topic: 0}
+    end
+  end
 end

@@ -36,13 +36,7 @@ defmodule ChatWeb.Schema.MessagesTypes do
     field :message_added, :message do
       arg(:room_id, non_null(:integer))
 
-      config(fn args, %{context: context} ->
-        if Map.has_key?(context, :current_user) do
-          {:ok, topic: args.room_id}
-        else
-          {:ok, topic: nil}
-        end
-      end)
+      config(&MessagesResolvers.message_added/2)
 
       trigger(
         :create_message,
