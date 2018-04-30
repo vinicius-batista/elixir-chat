@@ -11,6 +11,7 @@ defmodule ChatWeb.Schema do
   query do
     import_fields(:account_queries)
     import_fields(:rooms_queries)
+    import_fields(:messages_queries)
   end
 
   mutation do

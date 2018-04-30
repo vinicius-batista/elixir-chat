@@ -64,7 +64,7 @@ defmodule ChatWeb.RoomsResolverTest do
 
   test "rooms returns list of room", %{conn: conn, user: user} do
     query = "
-      query($name: String){
+      query($name: String!){
         rooms(name: $name) {
           id,
           name,

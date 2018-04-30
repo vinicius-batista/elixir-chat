@@ -21,7 +21,14 @@ defmodule ChatWeb.MessagesResolverTest do
 
     {:ok, room} = Rooms.create_room(room_attrs)
 
-    {:ok, %{user: %Accounts.User{user | password: nil}, room: room}}
+    message_attrs = %{
+      text: "test --",
+      room_id: room.id,
+      user_id: user.id
+    }
+
+    {:ok, message} = Rooms.create_message(message_attrs)
+    {:ok, %{user: %Accounts.User{user | password: nil}, room: room, message: message}}
   end
 
   test "create_message returns new message", %{conn: conn, user: user, room: room} do
@@ -53,5 +60,34 @@ defmodule ChatWeb.MessagesResolverTest do
 
     assert response["text"] == text
     assert response["user"]["id"] == to_string(user.id)
+  end
+
+  test "messages returns list of message", %{conn: conn, user: user, room: room} do
+    query = "
+      query($room_id: Int!){
+        messages(room_id: $room_id) {
+          id,
+          text,
+          user {
+            id,
+            name
+          }
+        }
+      }
+    "
+
+    variables = %{
+      room_id: room.id
+    }
+
+    [message] =
+      conn
+      |> authenticate_user(user)
+      |> graphql_query(query: query, variables: variables)
+      |> get_query_data("messages")
+
+    assert message["text"] == "test --"
+    assert message["user"]["id"] == to_string(user.id)
+    assert message["user"]["name"] == user.name
   end
 end

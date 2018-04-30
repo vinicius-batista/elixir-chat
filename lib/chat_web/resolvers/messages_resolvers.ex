@@ -16,4 +16,9 @@ defmodule ChatWeb.Resolvers.MessagesResolvers do
       {:ok, topic: 0}
     end
   end
+
+  def get_messages(_, %{room_id: room_id, cursor: cursor, limit: limit}, _) do
+    messages = Rooms.list_messages(room_id, limit, cursor)
+    {:ok, messages}
+  end
 end

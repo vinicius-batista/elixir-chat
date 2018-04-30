@@ -60,7 +60,7 @@ defmodule ChatWeb.Schema.RoomsTypes do
 
   object :rooms_queries do
     field :rooms, list_of(:room) do
-      arg(:name, :string)
+      arg(:name, non_null(:string))
       arg(:limit, :integer, default_value: 20)
       arg(:cursor, :string, default_value: DateTime.utc_now())
       middleware(Authentication)

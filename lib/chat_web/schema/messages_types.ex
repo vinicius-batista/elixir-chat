@@ -32,6 +32,16 @@ defmodule ChatWeb.Schema.MessagesTypes do
     end
   end
 
+  object :messages_queries do
+    field :messages, list_of(:message) do
+      arg(:room_id, non_null(:integer))
+      arg(:limit, :integer, default_value: 20)
+      arg(:cursor, :string, default_value: DateTime.utc_now())
+      middleware(Authentication)
+      resolve(&MessagesResolvers.get_messages/3)
+    end
+  end
+
   object :messages_subscriptions do
     field :message_added, :message do
       arg(:room_id, non_null(:integer))
