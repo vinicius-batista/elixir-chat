@@ -93,6 +93,31 @@ defmodule ChatWeb.RoomsResolverTest do
     assert room["owner"]["name"] == user.name
   end
 
+  test "room returns a room object with given id", %{conn: conn, user: user, room: room} do
+    query = "
+      query($id: Int!) {
+        room(id: $id) {
+          id,
+          name,
+          description
+        }
+      }
+    "
+    variables = %{
+      id: room.id
+    }
+
+    roomQuery =
+      conn
+      |> authenticate_user(user)
+      |> graphql_query(query: query, variables: variables)
+      |> get_query_data("room")
+
+    assert room.name == roomQuery["name"]
+    assert to_string(room.id) == roomQuery["id"]
+    assert room.description == roomQuery["description"]
+  end
+
   test "update_room returns room object", %{conn: conn, user: user, room: room} do
     variables = %{
       input: %{
@@ -132,7 +157,7 @@ defmodule ChatWeb.RoomsResolverTest do
 
   test "delete_room returns room object", %{conn: conn, user: user, room: room} do
     query = "
-      mutation ($id:String) {
+      mutation ($id:Int) {
         deleteRoom(id:$id)
       }
     "

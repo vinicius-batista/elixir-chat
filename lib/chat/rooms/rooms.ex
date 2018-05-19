@@ -43,6 +43,8 @@ defmodule Chat.Rooms do
   """
   def get_room!(id), do: Repo.get!(Room, id)
 
+  def get_room(id), do: Repo.get(Room, id)
+
   @doc """
   Gets a single room.
 

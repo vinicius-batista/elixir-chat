@@ -66,5 +66,11 @@ defmodule ChatWeb.Schema.RoomsTypes do
       middleware(Authentication)
       resolve(&RoomsResolvers.get_rooms/3)
     end
+
+    field :room, non_null(:room) do
+      arg(:id, non_null(:integer))
+      middleware(Authentication)
+      resolve(&RoomsResolvers.get_room/3)
+    end
   end
 end

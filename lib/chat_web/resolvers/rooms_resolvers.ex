@@ -29,4 +29,11 @@ defmodule ChatWeb.Resolvers.RoomsResolvers do
     rooms = Rooms.list_rooms(name, limit, cursor)
     {:ok, rooms}
   end
+
+  def get_room(_, %{id: id}, _) do
+    case Rooms.get_room(id) do
+      nil -> {:error, :not_found}
+      room -> {:ok, room}
+    end
+  end
 end

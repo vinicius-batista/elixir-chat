@@ -58,6 +58,7 @@ defmodule Chat.Accounts.Auth do
     |> AuthToken.revoke_token()
   end
 
+  @spec check_password(%Chat.Accounts.User{}, String.t()) :: boolean | {:error, String.t()}
   def check_password(user, password) do
     case user do
       nil -> {:error, "Could not find user with email provided"}
