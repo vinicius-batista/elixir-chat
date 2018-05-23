@@ -44,6 +44,8 @@ defmodule ChatWeb.Endpoint do
     signing_salt: "gMwyEYbU"
   )
 
+  plug(CORSPlug)
+
   plug(ChatWeb.Router)
 
   @doc """
