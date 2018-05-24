@@ -43,4 +43,4 @@ config :chat, Chat.Repo,
   password: "123",
   database: "chat_dev",
   hostname: "localhost",
-  pool_size: 10
+  pool_size: 100
