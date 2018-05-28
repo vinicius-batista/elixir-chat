@@ -13,9 +13,9 @@ config :logger, level: :warn
 config :chat, Chat.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
-  password: "123",
+  password: "",
   database: "chat_test",
-  hostname: "localhost",
+  hostname: "db",
   pool: Ecto.Adapters.SQL.Sandbox
 
 config :bcrypt_elixir, :log_rounds, 4
