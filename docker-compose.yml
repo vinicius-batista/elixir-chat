@@ -1,8 +1,15 @@
 version: '3.6'
+volumes:
+  postgres-data:
+    driver: local
+
 services:
   db:
     image: postgres:10
-
+    volumes:
+      - type: volume
+        source: postgres-data
+        target: /var/lib/postgresql/data
   web:
     build: .
     volumes:
