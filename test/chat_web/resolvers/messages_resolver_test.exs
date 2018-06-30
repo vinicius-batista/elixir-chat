@@ -1,4 +1,7 @@
 defmodule ChatWeb.MessagesResolverTest do
+  @moduledoc """
+  Messages resolver tests
+  """
   use ChatWeb.ConnCase
 
   alias Chat.{Accounts, Rooms}

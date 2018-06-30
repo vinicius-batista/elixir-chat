@@ -1,4 +1,7 @@
 defmodule Chat.AuthTest do
+  @moduledoc """
+  Auth module test
+  """
   use Chat.DataCase
   alias Chat.Accounts
   alias Chat.Accounts.Auth

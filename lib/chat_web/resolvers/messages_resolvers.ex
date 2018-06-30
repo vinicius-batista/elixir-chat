@@ -1,4 +1,7 @@
 defmodule ChatWeb.Resolvers.MessagesResolvers do
+  @moduledoc """
+  Graphql Messages`s resolvers
+  """
   alias Chat.Rooms
 
   def create_message(_, %{input: input}, %{context: %{current_user: current_user}}) do

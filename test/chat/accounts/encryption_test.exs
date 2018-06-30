@@ -1,4 +1,7 @@
 defmodule Chat.EncryptionTest do
+  @moduledoc """
+  Encryption module test
+  """
   use Chat.DataCase
   alias Chat.Accounts.Encryption
 

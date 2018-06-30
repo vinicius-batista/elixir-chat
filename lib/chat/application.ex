@@ -1,5 +1,9 @@
 defmodule Chat.Application do
+  @moduledoc """
+  Application module
+  """
   use Application
+  alias ChatWeb.Endpoint
 
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
@@ -26,7 +30,7 @@ defmodule Chat.Application do
   # Tell Phoenix to update the endpoint configuration
   # whenever the application is updated.
   def config_change(changed, _new, removed) do
-    ChatWeb.Endpoint.config_change(changed, removed)
+    Endpoint.config_change(changed, removed)
     :ok
   end
 end

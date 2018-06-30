@@ -1,4 +1,7 @@
 defmodule ChatWeb.Schema.AccountsTypes do
+  @moduledoc """
+  Graphql schema related to Accounts
+  """
   use Absinthe.Schema.Notation
   import Absinthe.Resolution.Helpers, only: [dataloader: 1]
 

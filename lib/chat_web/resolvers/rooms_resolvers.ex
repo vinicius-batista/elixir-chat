@@ -1,4 +1,7 @@
 defmodule ChatWeb.Resolvers.RoomsResolvers do
+  @moduledoc """
+  Graphql Rooms's resolvers
+  """
   alias Chat.Rooms
 
   def create_room(_, %{input: input}, %{context: %{current_user: current_user}}) do
@@ -17,7 +20,9 @@ defmodule ChatWeb.Resolvers.RoomsResolvers do
   end
 
   def delete_room(_, %{id: id}, %{context: %{current_user: current_user}}) do
-    with room when is_map(room) <- Rooms.get_room_by(id: id, owner_id: current_user.id),
+    room_params = [id: id, owner_id: current_user.id]
+
+    with room when is_map(room) <- Rooms.get_room_by(room_params),
          {:ok, _} <- Rooms.delete_room(room) do
       {:ok, "Room deleted successfully."}
     else

@@ -1,4 +1,7 @@
 defmodule Chat.AuthTokenTest do
+  @moduledoc """
+  AuthToken module test
+  """
   use Chat.DataCase
   alias Chat.Accounts
   alias Chat.Accounts.AuthToken

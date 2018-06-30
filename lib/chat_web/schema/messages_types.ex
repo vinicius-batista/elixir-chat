@@ -1,4 +1,7 @@
 defmodule ChatWeb.Schema.MessagesTypes do
+  @moduledoc """
+  Graphql schema related to Messages
+  """
   use Absinthe.Schema.Notation
   import Absinthe.Resolution.Helpers, only: [dataloader: 1]
 

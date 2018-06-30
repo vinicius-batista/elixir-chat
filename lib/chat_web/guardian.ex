@@ -1,4 +1,7 @@
 defmodule ChatWeb.Guardian do
+  @moduledoc """
+  Module for setup Guardian
+  """
   use Guardian, otp_app: :chat
 
   alias Chat.Accounts.User

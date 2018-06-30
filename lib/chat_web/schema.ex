@@ -1,7 +1,12 @@
 defmodule ChatWeb.Schema do
+  @moduledoc """
+  Graphql Schema
+  """
   use Absinthe.Schema
 
-  alias ChatWeb.Schema.{AccountsTypes, RoomsTypes, MessagesTypes}
+  alias Absinthe.Middleware.Dataloader
+  alias Absinthe.Plugin
+  alias ChatWeb.Schema.{AccountsTypes, MessagesTypes, RoomsTypes}
 
   import_types(Absinthe.Type.Custom)
   import_types(AccountsTypes)
@@ -25,6 +30,6 @@ defmodule ChatWeb.Schema do
   end
 
   def plugins do
-    [Absinthe.Middleware.Dataloader] ++ Absinthe.Plugin.defaults()
+    [Dataloader] ++ Plugin.defaults()
   end
 end

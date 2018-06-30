@@ -1,4 +1,7 @@
 defmodule Chat.Accounts.User do
+  @moduledoc """
+  User schema
+  """
   use Ecto.Schema
   import Ecto.Changeset
   alias Chat.Accounts.{Token, Encryption}

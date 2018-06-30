@@ -25,7 +25,8 @@ defmodule ChatWeb.UserSocket do
     %{"Authorization" => authorization} = params
 
     context =
-      case authorization do
+      authorization
+      |> case do
         "Bearer " <> token -> AuthToken.authorize(token)
         _ -> %{}
       end

@@ -14,6 +14,7 @@ defmodule ChatWeb.ChannelCase do
   """
 
   use ExUnit.CaseTemplate
+  alias Ecto.Adapters.SQL.Sandbox
 
   using do
     quote do
@@ -26,10 +27,10 @@ defmodule ChatWeb.ChannelCase do
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Chat.Repo)
+    :ok = Sandbox.checkout(Chat.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Chat.Repo, {:shared, self()})
+      Sandbox.mode(Chat.Repo, {:shared, self()})
     end
 
     :ok

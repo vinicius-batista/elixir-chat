@@ -45,7 +45,8 @@ defmodule Chat.Mixfile do
       {:bcrypt_elixir, "~> 1.0"},
       {:guardian, "~> 1.0"},
       {:dataloader, "~> 1.0.0"},
-      {:cors_plug, "~> 1.5"}
+      {:cors_plug, "~> 1.5"},
+      {:credo, "~> 0.9.1", only: [:dev, :test], runtime: false}
     ]
   end
 

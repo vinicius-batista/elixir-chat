@@ -1,4 +1,7 @@
 defmodule ChatWeb.GraphqlHelper do
+  @moduledoc """
+  Test helper for graphql queries
+  """
   use Phoenix.ConnTest
 
   @endpoint ChatWeb.Endpoint

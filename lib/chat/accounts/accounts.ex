@@ -47,7 +47,6 @@ defmodule Chat.Accounts do
       iex> get_user_by(email: "test@test.com")
       %User{}
 
-
   """
   def get_user_by(clauses), do: Repo.get_by(User, clauses)
 

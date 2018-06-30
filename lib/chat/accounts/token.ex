@@ -1,7 +1,11 @@
 defmodule Chat.Accounts.Token do
+  @moduledoc """
+  Token Schema
+  """
   use Ecto.Schema
   import Ecto.Changeset
   alias Chat.Accounts.User
+  alias Ecto.UUID
 
   @required_fields ~w(refresh_token user_id)a
   @all_fields ~w(is_revoked type)a ++ @required_fields
@@ -26,7 +30,7 @@ defmodule Chat.Accounts.Token do
   defp generate_refresh_token(changeset) do
     with nil <- get_field(changeset, :refresh_token, nil) do
       changeset
-      |> put_change(:refresh_token, Ecto.UUID.generate())
+      |> put_change(:refresh_token, UUID.generate())
     else
       _ -> changeset
     end

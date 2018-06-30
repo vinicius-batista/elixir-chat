@@ -13,6 +13,8 @@ defmodule Chat.DataCase do
   """
 
   use ExUnit.CaseTemplate
+  alias Ecto.Adapters.SQL.Sandbox
+  alias Ecto.{Changeset}
 
   using do
     quote do
@@ -26,10 +28,10 @@ defmodule Chat.DataCase do
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Chat.Repo)
+    :ok = Sandbox.checkout(Chat.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Chat.Repo, {:shared, self()})
+      Sandbox.mode(Chat.Repo, {:shared, self()})
     end
 
     :ok
@@ -44,7 +46,7 @@ defmodule Chat.DataCase do
 
   """
   def errors_on(changeset) do
-    Ecto.Changeset.traverse_errors(changeset, fn {message, opts} ->
+    Changeset.traverse_errors(changeset, fn {message, opts} ->
       Enum.reduce(opts, message, fn {key, value}, acc ->
         String.replace(acc, "%{#{key}}", to_string(value))
       end)

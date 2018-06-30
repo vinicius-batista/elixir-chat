@@ -1,4 +1,7 @@
 defmodule ChatWeb.Router do
+  @moduledoc """
+  Module for Router
+  """
   use ChatWeb, :router
 
   pipeline :graphql do

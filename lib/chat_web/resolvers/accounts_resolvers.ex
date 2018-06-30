@@ -1,4 +1,7 @@
 defmodule ChatWeb.Resolvers.AccountsResolvers do
+  @moduledoc """
+  Graphql Accounts's resolvers
+  """
   alias Chat.Accounts.Auth
   alias Chat.Accounts
 

@@ -1,4 +1,7 @@
 defmodule ChatWeb.Schema.RoomsTypes do
+  @moduledoc """
+  Graphql schema related to Rooms
+  """
   use Absinthe.Schema.Notation
   import Absinthe.Resolution.Helpers, only: [dataloader: 1]
 

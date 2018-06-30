@@ -1,7 +1,11 @@
 defmodule ChatWeb.Helpers.BuildLoader do
+  @moduledoc """
+  Configure Dataloader for Graphql
+  """
   import Ecto.Query, warn: false
-  alias Chat.Rooms.{Room, Message}
   alias Chat.Accounts.User
+  alias Chat.Rooms.{Message, Room}
+  alias Dataloader.Ecto
 
   def build(ctx) do
     loader =
@@ -13,8 +17,8 @@ defmodule ChatWeb.Helpers.BuildLoader do
     Map.put(ctx, :loader, loader)
   end
 
-  defp data() do
-    Dataloader.Ecto.new(Chat.Repo, query: &query/2)
+  defp data do
+    Ecto.new(Chat.Repo, query: &query/2)
   end
 
   defp query(Message, params) do

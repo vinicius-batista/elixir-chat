@@ -1,4 +1,7 @@
 defmodule ChatWeb.RoomsResolverTest do
+  @moduledoc """
+  Rooms resolver tests
+  """
   use ChatWeb.ConnCase
 
   alias Chat.{Accounts, Rooms}
@@ -103,19 +106,20 @@ defmodule ChatWeb.RoomsResolverTest do
         }
       }
     "
+
     variables = %{
       id: room.id
     }
 
-    roomQuery =
+    room_query =
       conn
       |> authenticate_user(user)
       |> graphql_query(query: query, variables: variables)
       |> get_query_data("room")
 
-    assert room.name == roomQuery["name"]
-    assert to_string(room.id) == roomQuery["id"]
-    assert room.description == roomQuery["description"]
+    assert room.name == room_query["name"]
+    assert to_string(room.id) == room_query["id"]
+    assert room.description == room_query["description"]
   end
 
   test "update_room returns room object", %{conn: conn, user: user, room: room} do

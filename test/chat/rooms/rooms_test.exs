@@ -1,4 +1,7 @@
 defmodule Chat.RoomsTest do
+  @moduledoc """
+  Rooms context test
+  """
   use Chat.DataCase
 
   alias Chat.Rooms
