@@ -44,6 +44,22 @@ defmodule Chat.AccountsTest do
       assert user.name == "some name"
     end
 
+    test "create_user/1 with profile_pic and valid data" do
+      assert {:ok, %User{} = user} =
+               %{
+                 profile_pic_file: %Plug.Upload{
+                   path: "test/support/test_image.jpg",
+                   content_type: "jpg",
+                   filename: "Some random name"
+                 }
+               }
+               |> Enum.into(@valid_attrs)
+               |> Accounts.create_user()
+
+      assert user.name == "some name"
+      assert String.valid?(user.profile_pic)
+    end
+
     test "create_user/1 with invalid data returns error changeset" do
       assert {:error, _} = Accounts.create_user(@invalid_attrs)
     end
@@ -53,6 +69,26 @@ defmodule Chat.AccountsTest do
       assert {:ok, user} = Accounts.update_user(user, @update_attrs)
       assert %User{} = user
       assert user.name == "some updated name"
+    end
+
+    test "update_user/2 with profile_pic and valid data" do
+      user = user_fixture()
+
+      attrs =
+        %{
+          profile_pic_file: %Plug.Upload{
+            path: "test/support/test_image.jpg",
+            content_type: "jpg",
+            filename: "Some random name"
+          }
+        }
+        |> Enum.into(@update_attrs)
+
+      assert {:ok, user} = Accounts.update_user(user, attrs)
+
+      assert %User{} = user
+      assert user.name == "some updated name"
+      assert String.valid?(user.profile_pic)
     end
 
     test "update_user/2 with invalid data returns error changeset" do

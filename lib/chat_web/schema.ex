@@ -12,6 +12,7 @@ defmodule ChatWeb.Schema do
   import_types(AccountsTypes)
   import_types(RoomsTypes)
   import_types(MessagesTypes)
+  import_types(Absinthe.Plug.Types)
 
   query do
     import_fields(:account_queries)

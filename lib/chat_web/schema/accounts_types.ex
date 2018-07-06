@@ -17,6 +17,7 @@ defmodule ChatWeb.Schema.AccountsTypes do
     field(:username, :string)
     field(:inserted_at, :string)
     field(:updated_at, :string)
+    field(:profile_pic, :string)
     field(:rooms, list_of(:room), resolve: dataloader(Room))
   end
 
@@ -33,6 +34,7 @@ defmodule ChatWeb.Schema.AccountsTypes do
     field(:email, non_null(:string))
     field(:username, non_null(:string))
     field(:password, non_null(:string))
+    field(:profile_pic_file, :upload)
   end
 
   @desc "Input object for login"
@@ -46,6 +48,7 @@ defmodule ChatWeb.Schema.AccountsTypes do
     field(:email, :string)
     field(:name, :string)
     field(:username, :string)
+    field(:profile_pic_file, :upload)
   end
 
   @desc "Input object for change_password"

@@ -4,6 +4,8 @@ defmodule ChatWeb.Router do
   """
   use ChatWeb, :router
 
+  alias ChatWeb.DownloadController
+
   pipeline :graphql do
     plug(:accepts, ["json"])
     plug(ChatWeb.Context)
@@ -21,5 +23,9 @@ defmodule ChatWeb.Router do
     )
 
     forward("/graphql", Absinthe.Plug, schema: ChatWeb.Schema)
+  end
+
+  scope "/download" do
+    get("/:folder/:file", DownloadController, :show)
   end
 end

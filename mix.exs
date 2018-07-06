@@ -1,4 +1,7 @@
 defmodule Chat.Mixfile do
+  @moduledoc """
+  Mix file
+  """
   use Mix.Project
 
   def project do
